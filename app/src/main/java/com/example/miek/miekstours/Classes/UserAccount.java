@@ -7,8 +7,10 @@ import org.json.JSONObject;
  * Created by MMART on 11/10/2017.
  */
 public class UserAccount {
+    String id;
     String email;
     String password;
+    //
     public UserAccount() {
 
     }

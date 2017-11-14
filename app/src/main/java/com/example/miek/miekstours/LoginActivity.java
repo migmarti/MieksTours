@@ -9,25 +9,27 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailText;
     private EditText passwordText;
-    private String url = "";
     private RequestQueue queue;
+    public static final String LOGIN_URL = "http://tecnami.com/miekstours/api/login.php";
+    public static final String KEY_EMAIL="email";
+    public static final String KEY_PASSWORD="password";
+    public static final String LOGIN_SUCCESS="success";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,35 +103,64 @@ public class LoginActivity extends AppCompatActivity {
         return password.length() > 4;
     }
 
-    private void validateCredentials(View view, final String email, final String password) {
-        final JsonArrayRequest checkExists = new JsonArrayRequest(Request.Method.GET, url,
-                null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                Boolean success = false;
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.getString(i));
-                        if (email == jsonObject.getString("email") && password == jsonObject.getString("password")) {
-                            Toast.makeText(getBaseContext(), "Success!", Toast.LENGTH_LONG).show();
-                            success = true;
-                            break;
+//    private void validateCredentials(final View view, final String email, final String password) {
+//        final JsonArrayRequest validate = new JsonArrayRequest(Request.Method.GET, url,
+//                null, new Response.Listener<JSONArray>() {
+//            @Override
+//            public void onResponse(JSONArray response) {
+//                Boolean success = false;
+//                for (int i = 0; i < response.length(); i++) {
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(response.getString(i));
+//                        if (Objects.equals(email, jsonObject.getString("email")) && Objects.equals(password, jsonObject.getString("password"))) {
+//                            Snackbar.make(view, "Success!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+//                            success = true;
+//                            break;
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                if (!success) {
+//                    Snackbar.make(view, "Incorrect username and/or password", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Snackbar.make(view, "Error: " + error.toString(), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+//            }
+//        });
+//        queue.add(validate);
+//    }
+
+    private void validateCredentials(final View view, final String email, final String password) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.trim().equalsIgnoreCase(LOGIN_SUCCESS)){
+                            Snackbar.make(view, "Success!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        }else{
+                            Snackbar.make(view, "Incorrect username and/or password", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-                if (success == false) {
-                    Toast.makeText(getBaseContext(), "Incorrect username and password.", Toast.LENGTH_LONG).show();
-                }
-            }
-        }, new Response.ErrorListener() {
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Snackbar.make(view, "Error: " + error.getMessage(), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    }
+                }){
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(), "Error: " + error.toString(), Toast.LENGTH_LONG).show();
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put(KEY_EMAIL, email);
+                params.put(KEY_PASSWORD, password);
+                return params;
             }
-        });
-        queue.add(checkExists);
+        };
+        queue.add(stringRequest);
     }
 }
 
