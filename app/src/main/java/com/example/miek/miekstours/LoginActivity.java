@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.miek.miekstours.Classes.DatabaseHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,14 +27,13 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordText;
     private RequestQueue queue;
     public static final String LOGIN_URL = "http://tecnami.com/miekstours/api/login.php";
-    public static final String KEY_EMAIL="email";
-    public static final String KEY_PASSWORD="password";
-    public static final String LOGIN_SUCCESS="success";
+    DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        db = new DatabaseHandler(getApplicationContext());
         queue = Volley.newRequestQueue(this);
         emailText = (EditText) findViewById(R.id.email);
         passwordText = (EditText) findViewById(R.id.password);
@@ -66,21 +65,21 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            passwordText.setError(getString(R.string.error_invalid_password));
-            focusView = passwordText;
-            cancel = true;
-        }
-
-        if (TextUtils.isEmpty(email)) {
-            emailText.setError(getString(R.string.error_field_required));
-            focusView = emailText;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            emailText.setError(getString(R.string.error_invalid_email));
-            focusView = emailText;
-            cancel = true;
-        }
+//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+//            passwordText.setError(getString(R.string.error_invalid_password));
+//            focusView = passwordText;
+//            cancel = true;
+//        }
+//
+//        if (TextUtils.isEmpty(email)) {
+//            emailText.setError(getString(R.string.error_field_required));
+//            focusView = emailText;
+//            cancel = true;
+//        } else if (!isEmailValid(email)) {
+//            emailText.setError(getString(R.string.error_invalid_email));
+//            focusView = emailText;
+//            cancel = true;
+//        }
 
         if (cancel) {
             focusView.requestFocus();
@@ -100,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 4;
+        return password.length() > 6;
     }
 
 //    private void validateCredentials(final View view, final String email, final String password) {
@@ -139,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.trim().equalsIgnoreCase(LOGIN_SUCCESS)){
+                        if(response.trim().contains("success")){
                             Snackbar.make(view, "Success!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         }else{
                             Snackbar.make(view, "Incorrect username and/or password", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
@@ -155,8 +154,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put(KEY_EMAIL, email);
-                params.put(KEY_PASSWORD, password);
+                params.put(db.KEY_EMAIL, email);
+                params.put(db.KEY_PASSWORD, password);
                 return params;
             }
         };

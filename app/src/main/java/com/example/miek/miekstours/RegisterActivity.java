@@ -1,8 +1,10 @@
 package com.example.miek.miekstours;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,23 +16,25 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.miek.miekstours.Classes.DatabaseHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText emailText;
     private EditText passwordText;
     private EditText confirmPasswordText;
-    private String REGISTER_URL = "http://tecnami.com/miekstours/api/register.php";
-    public static final String KEY_EMAIL="Email";
-    public static final String KEY_PASSWORD="Password";
+    private String CHECKUSER_URL = "http://tecnami.com/miekstours/api/check_user.php";
     private RequestQueue queue;
+    DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        db = new DatabaseHandler(getApplicationContext());
         queue = Volley.newRequestQueue(this);
         emailText = (EditText) findViewById(R.id.textEmail);
         passwordText = (EditText) findViewById(R.id.textPassword);
@@ -52,54 +56,67 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-//    public void register(final View view) {
-//        final String email = emailText.getText().toString();
-//        final String password = passwordText.getText().toString();
-//        if (Objects.equals(password, confirmPasswordText.getText().toString())) {
-//            final JsonArrayRequest checkExists = new JsonArrayRequest(Request.Method.GET, getUrl,
-//                    null, new Response.Listener<JSONArray>() {
-//                @Override
-//                public void onResponse(JSONArray response) {
-//                    Boolean accountExists = false;
-//                    for (int i = 0; i < response.length(); i++) {
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(response.getString(i));
-//                            if (Objects.equals(email, jsonObject.getString("email"))) {
-//                                Snackbar.make(view, "An account with that email already exists", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-//                                accountExists = true;
-//                                break;
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    if (!accountExists) {
-//                        UserAccount acc = new UserAccount();
-//                        acc.setEmail(email);
-//                        acc.setPassword(password);
-//                        JsonObjectRequest jor = uploadJSON(acc.toJSON(), postUrl);
-//                        queue.add(jor);
-//                        Snackbar.make(view, "Account created", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-//                    }
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    Snackbar.make(view, "Error: " + error.toString(), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-//                }
-//            });
-//            queue.add(checkExists);
-//        }
-//    }
-
     private void register(final View view) {
         final String email = emailText.getText().toString();
         final String password = passwordText.getText().toString();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
+        final String confirmPassword = confirmPasswordText.getText().toString();
+        boolean cancel = false;
+        View focusView = null;
+
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            passwordText.setError(getString(R.string.error_invalid_password));
+            focusView = passwordText;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(email)) {
+            emailText.setError(getString(R.string.error_field_required));
+            focusView = emailText;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            emailText.setError(getString(R.string.error_invalid_email));
+            focusView = emailText;
+            cancel = true;
+        }
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            if (!Objects.equals(confirmPassword, password)) {
+                Snackbar.make(view, "Passwords do not match.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            }
+            else {
+                Snackbar.make(view, "Checking database...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                checkExists(view, email, password);
+            }
+        }
+    }
+
+    private boolean isEmailValid(String email) {
+        return email.contains("@");
+    }
+
+    private boolean isPasswordValid(String password) {
+        return password.length() > 6;
+    }
+
+    private void checkExists(final View view, final String email, final String password) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, CHECKUSER_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Snackbar.make(view, response, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        if (response.contains("success")) {
+                            //Snackbar.make(view, "Success!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                            //SystemClock.sleep(1000);
+                            Intent intent = new Intent(getApplicationContext(), RegisterProfileActivity.class);
+                            intent.putExtra(db.KEY_EMAIL, email);
+                            intent.putExtra(db.KEY_PASSWORD, password);
+                            startActivity(intent);
+
+                        }
+                        else {
+                            Snackbar.make(view, "An account with that email already exists.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -111,8 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put(KEY_EMAIL, email);
-                params.put(KEY_PASSWORD, password);
+                params.put(db.KEY_EMAIL, email);
                 return params;
             }
         };
@@ -123,19 +139,6 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-//    public JsonObjectRequest uploadJSON(final JSONObject jsonBody, String url) {
-//        final JsonObjectRequest jsonPostRequest = new JsonObjectRequest
-//                (Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        System.out.println("Successfully uploaded object.");
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        System.out.println("Error uploading: " + error.toString());
-//                    }
-//                });
-//        return jsonPostRequest;
-//    }
+
+
 }
