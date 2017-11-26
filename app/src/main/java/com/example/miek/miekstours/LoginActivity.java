@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.miek.miekstours.Classes.DatabaseHandler;
+import com.example.miek.miekstours.Classes.UserAccount;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +29,20 @@ public class LoginActivity extends AppCompatActivity {
     private RequestQueue queue;
     public static final String LOGIN_URL = "http://tecnami.com/miekstours/api/login.php";
     DatabaseHandler db;
+    UserAccount currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         db = new DatabaseHandler(getApplicationContext());
+        try {
+            currentUser = db.getCurrentUser();
+            Intent intent = new Intent(getApplicationContext(), HubActivity.class);
+            startActivity(intent);
+        }
+        catch (Exception e) {}
+
         queue = Volley.newRequestQueue(this);
         emailText = (EditText) findViewById(R.id.email);
         passwordText = (EditText) findViewById(R.id.password);
@@ -102,44 +111,19 @@ public class LoginActivity extends AppCompatActivity {
         return password.length() > 6;
     }
 
-//    private void validateCredentials(final View view, final String email, final String password) {
-//        final JsonArrayRequest validate = new JsonArrayRequest(Request.Method.GET, url,
-//                null, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                Boolean success = false;
-//                for (int i = 0; i < response.length(); i++) {
-//                    try {
-//                        JSONObject jsonObject = new JSONObject(response.getString(i));
-//                        if (Objects.equals(email, jsonObject.getString("email")) && Objects.equals(password, jsonObject.getString("password"))) {
-//                            Snackbar.make(view, "Success!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-//                            success = true;
-//                            break;
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if (!success) {
-//                    Snackbar.make(view, "Incorrect username and/or password", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Snackbar.make(view, "Error: " + error.toString(), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-//            }
-//        });
-//        queue.add(validate);
-//    }
-
     private void validateCredentials(final View view, final String email, final String password) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.trim().contains("success")){
+                        if(response.trim().contains("UserId")){
                             Snackbar.make(view, "Success!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                            UserAccount user = new UserAccount(response, db);
+                            db.addUser(user);
+                            System.out.println("FIRST NAME: " + user.getFirstName());
+                            Intent intent = new Intent(getApplicationContext(), HubActivity.class);
+                            //intent.putExtra("Parcel", user);
+                            startActivity(intent);
                         }else{
                             Snackbar.make(view, "Incorrect username and/or password", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         }
