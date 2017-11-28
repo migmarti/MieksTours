@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.miek.miekstours.Classes.DatabaseHandler;
+import com.example.miek.miekstours.Classes.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
         db = new DatabaseHandler(getApplicationContext());
         queue = Volley.newRequestQueue(this);
         emailText = (EditText) findViewById(R.id.textEmail);
@@ -83,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             if (!Objects.equals(confirmPassword, password)) {
-                Snackbar.make(view, "Passwords do not match.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                Utils.showAlert("Invalid Input", "Your passwords do not match.", RegisterActivity.this);
             }
             else {
                 Snackbar.make(view, "Checking database...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -106,23 +108,22 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (response.contains("success")) {
-                            //Snackbar.make(view, "Success!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                            //SystemClock.sleep(1000);
                             Intent intent = new Intent(getApplicationContext(), RegisterProfileActivity.class);
                             intent.putExtra(db.KEY_EMAIL, email);
                             intent.putExtra(db.KEY_PASSWORD, password);
                             startActivity(intent);
+                            finish();
 
                         }
                         else {
-                            Snackbar.make(view, "An account with that email already exists.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                            Utils.showAlert("Invalid Email", "An account with that email already exists.", RegisterActivity.this);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Snackbar.make(view, "Error: " + error.getMessage(), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Utils.showAlert("Technical Error", error.getMessage(), RegisterActivity.this);
                     }
                 }){
             @Override

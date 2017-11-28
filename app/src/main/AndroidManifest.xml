@@ -29,6 +29,11 @@
         <activity android:name=".RegisterProfileActivity" />
         <activity android:name=".HubActivity" />
         <activity android:name=".EditProfileActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAxx9hcwUKWyfX-Ih4rutn-6BWFGAiWmB0"/>
+
     </application>
 
 </manifest>

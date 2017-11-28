@@ -29,7 +29,8 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:hint="Email" />
+        android:hint="Email"
+        android:layout_marginTop="75dp" />
 
     <EditText
         android:layout_width="wrap_content"

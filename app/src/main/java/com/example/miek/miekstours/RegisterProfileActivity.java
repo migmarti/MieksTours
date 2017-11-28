@@ -2,7 +2,6 @@ package com.example.miek.miekstours;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +16,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.miek.miekstours.Classes.DatabaseHandler;
+import com.example.miek.miekstours.Classes.DateTextPicker;
 import com.example.miek.miekstours.Classes.UserAccount;
+import com.example.miek.miekstours.Classes.Utils;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +30,12 @@ import java.util.Random;
 
 public class RegisterProfileActivity extends AppCompatActivity {
     private String REGISTER_URL = "http://tecnami.com/miekstours/api/register.php";
+    private int PLACE_PICKER_REQUEST = 1;
     private RequestQueue queue;
     private TextView tv;
     private String id, email, password, firstName, lastName, dob, location, description;
-    private EditText firstNameText, lastNameText, dobText, locationText, descriptionText;
+    private EditText firstNameText, lastNameText, descriptionText, locationText;
+    private DateTextPicker dobText;
     DatabaseHandler db;
 
     @Override
@@ -41,9 +48,9 @@ public class RegisterProfileActivity extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.profileTitle);
         firstNameText = (EditText) findViewById(R.id.textFirstName);
         lastNameText = (EditText) findViewById(R.id.textLastName);
-        dobText = (EditText) findViewById(R.id.textDOB);
-        locationText = (EditText) findViewById(R.id.textLocation);
+        dobText = new DateTextPicker(this, (EditText) findViewById(R.id.textDOB));
         descriptionText = (EditText) findViewById(R.id.textDescription);
+        locationText = (EditText) findViewById(R.id.textLocation);
 
         Bundle extras = getIntent().getExtras();
         email = extras.getString(db.KEY_EMAIL);
@@ -51,13 +58,36 @@ public class RegisterProfileActivity extends AppCompatActivity {
         tv.setText("Create Profile\n" + email);
 
         Button finishButton = (Button) findViewById(R.id.buttonFinish);
+        Button locationButton = (Button) findViewById(R.id.buttonLocation);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 verifyFields(view);
             }
         });
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(builder.build(getApplicationContext()), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                    Utils.showAlert("Error", e.getMessage(), RegisterProfileActivity.this);
+                }
+            }
+        });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, getApplicationContext());
+                locationText.setText(place.getName());
+            }
+        }
+    }
+
 
     private void verifyFields(final View view) {
         firstName = firstNameText.getText().toString();
@@ -67,10 +97,10 @@ public class RegisterProfileActivity extends AppCompatActivity {
         description = descriptionText.getText().toString();
         id = getRandomString(10);
 
-        registerAccount(view, id, email, password, firstName, lastName, dob, location, description);
+        registerAccount(id, email, password, firstName, lastName, dob, location, description);
     }
 
-    private void registerAccount(final View view, final String id, final String email, final String password,
+    private void registerAccount(final String id, final String email, final String password,
                                  final String firstName, final String lastName, final String dob,
                                  final String location, final String description) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
@@ -78,20 +108,19 @@ public class RegisterProfileActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (response.contains("created")) {
-                            Snackbar.make(view, "Success! The account has been created", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                            Utils.showAlert("Success!", "Your account has been created.", RegisterProfileActivity.this);
                             db.addUser(new UserAccount(id, email, password, firstName, lastName, dob, location, description, 0, 0));
-                            Intent intent = new Intent(getApplicationContext(), HubActivity.class);
-                            startActivity(intent);
+                            Utils.executeActivity(getApplicationContext(), RegisterProfileActivity.this, HubActivity.class);
                         }
                         else {
-                            Snackbar.make(view, response, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                            Utils.showAlert("Unexpected Error", response, RegisterProfileActivity.this);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Snackbar.make(view, "Error: " + error.getMessage(), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                        Utils.showAlert("Technical Error", error.getMessage(), RegisterProfileActivity.this);
                     }
                 }){
             @Override
