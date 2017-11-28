@@ -17,12 +17,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.miek.miekstours.Classes.DatabaseHandler;
 import com.example.miek.miekstours.Classes.DateTextPicker;
+import com.example.miek.miekstours.Classes.LocationPicker;
 import com.example.miek.miekstours.Classes.UserAccount;
 import com.example.miek.miekstours.Classes.Utils;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,12 +27,12 @@ import java.util.Random;
 
 public class RegisterProfileActivity extends AppCompatActivity {
     private String REGISTER_URL = "http://tecnami.com/miekstours/api/register.php";
-    private int PLACE_PICKER_REQUEST = 1;
     private RequestQueue queue;
     private TextView tv;
     private String id, email, password, firstName, lastName, dob, location, description;
-    private EditText firstNameText, lastNameText, descriptionText, locationText;
+    private EditText firstNameText, lastNameText, descriptionText;
     private DateTextPicker dobText;
+    private LocationPicker locationText;
     DatabaseHandler db;
 
     @Override
@@ -50,7 +47,7 @@ public class RegisterProfileActivity extends AppCompatActivity {
         lastNameText = (EditText) findViewById(R.id.textLastName);
         dobText = new DateTextPicker(this, (EditText) findViewById(R.id.textDOB));
         descriptionText = (EditText) findViewById(R.id.textDescription);
-        locationText = (EditText) findViewById(R.id.textLocation);
+        locationText = new LocationPicker(this, (EditText) findViewById(R.id.textLocation), RegisterProfileActivity.this);
 
         Bundle extras = getIntent().getExtras();
         email = extras.getString(db.KEY_EMAIL);
@@ -58,34 +55,17 @@ public class RegisterProfileActivity extends AppCompatActivity {
         tv.setText("Create Profile\n" + email);
 
         Button finishButton = (Button) findViewById(R.id.buttonFinish);
-        Button locationButton = (Button) findViewById(R.id.buttonLocation);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 verifyFields(view);
             }
         });
-        locationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                try {
-                    startActivityForResult(builder.build(getApplicationContext()), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-                    Utils.showAlert("Error", e.getMessage(), RegisterProfileActivity.this);
-                }
-            }
-        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, getApplicationContext());
-                locationText.setText(place.getName());
-            }
-        }
+        locationText.activityResult(requestCode, resultCode, data);
     }
 
 

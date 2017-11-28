@@ -57,7 +57,7 @@
         android:layout_marginTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_alignEnd="@+id/buttonLocation" />
+        android:layout_alignEnd="@+id/textDescription" />
 
     <Button
         android:layout_width="wrap_content"
@@ -77,19 +77,11 @@
         android:id="@+id/textLocation"
         android:layout_below="@+id/textDOB"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/buttonLocation"
         android:layout_marginTop="5dp"
         android:hint="Location"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GET LOCATION"
-        android:id="@+id/buttonLocation"
-        android:layout_above="@+id/textDescription"
-        android:layout_alignEnd="@+id/textDescription" />
+        android:paddingRight="10dp"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
