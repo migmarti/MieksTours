@@ -7,6 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.example.miek.miekstours.HubActivity">
 
     <TextView
@@ -35,14 +37,13 @@
         android:layout_height="wrap_content"
         android:text="EDIT PROFILE"
         android:id="@+id/buttonEditProfile"
-        android:layout_below="@+id/button"
-        android:layout_alignStart="@+id/button"
-        android:layout_alignEnd="@+id/button" />
+        android:layout_alignTop="@+id/buttonSignOut"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/locationText"
         android:layout_marginTop="60dp"
         android:layout_below="@+id/textWelcome"
         android:layout_alignParentStart="true"
@@ -57,8 +58,35 @@
         android:layout_height="wrap_content"
         android:text="FIND HOSTS"
         android:id="@+id/button"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"
-        android:width="200dp" />
+        android:width="200dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/startDateText"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Set a start date"
+        android:textAlignment="center"
+        android:layout_below="@+id/locationText"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/button"
+        android:width="100dp"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/endDateText"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Set an end date"
+        android:textAlignment="center"
+        android:width="100dp"
+        android:layout_below="@+id/startDateText"
+        android:layout_alignEnd="@+id/buttonEditProfile"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

@@ -47,7 +47,7 @@ public class RegisterProfileActivity extends AppCompatActivity {
         lastNameText = (EditText) findViewById(R.id.textLastName);
         dobText = new DateTextPicker(this, (EditText) findViewById(R.id.textDOB));
         descriptionText = (EditText) findViewById(R.id.textDescription);
-        locationText = new LocationPicker(this, (EditText) findViewById(R.id.textLocation), RegisterProfileActivity.this);
+        locationText = new LocationPicker(this, (EditText) findViewById(R.id.textLocation));
 
         Bundle extras = getIntent().getExtras();
         email = extras.getString(db.KEY_EMAIL);

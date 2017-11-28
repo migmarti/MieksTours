@@ -17,18 +17,20 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 public class LocationPicker implements View.OnClickListener, View.OnFocusChangeListener {
     private EditText editText;
     private Context context;
-    private Activity activity;
     private int PLACE_PICKER_REQUEST = 1;
 
-    public LocationPicker(Context context, EditText editText, Activity activity) {
+    public LocationPicker(Context context, EditText editText) {
         this.context = context;
         this.editText = editText;
-        this.activity = activity;
 
         this.editText.setOnClickListener(this);
         this.editText.setOnFocusChangeListener(this);
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        locationText.activityResult(requestCode, resultCode, data);
+//    }
     public void activityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
@@ -41,6 +43,7 @@ public class LocationPicker implements View.OnClickListener, View.OnFocusChangeL
     public void startPicker() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
+            Activity activity = (Activity) this.context;
             activity.startActivityForResult(builder.build(this.context), PLACE_PICKER_REQUEST);
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
