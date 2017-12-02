@@ -28,12 +28,16 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".RegisterProfileActivity" />
         <activity android:name=".HubActivity" />
-        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".EditProfileActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAxx9hcwUKWyfX-Ih4rutn-6BWFGAiWmB0"/>
+            android:value="AIzaSyAxx9hcwUKWyfX-Ih4rutn-6BWFGAiWmB0" />
 
+        <activity android:name=".InterestsActivity" />
+        <activity android:name=".BecomeHostActivity" />
+        <activity android:name=".AvailableHostsActivity" />
+        <activity android:name=".HostProfileActivity"></activity>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.example.miek.miekstours.Classes;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
@@ -22,22 +23,24 @@ public class LocationPicker implements View.OnClickListener, View.OnFocusChangeL
     public LocationPicker(Context context, EditText editText) {
         this.context = context;
         this.editText = editText;
-
         this.editText.setOnClickListener(this);
         this.editText.setOnFocusChangeListener(this);
+        this.editText.setInputType(InputType.TYPE_NULL);
     }
 
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        locationText.activityResult(requestCode, resultCode, data);
 //    }
-    public void activityResult(int requestCode, int resultCode, Intent data) {
+    public Place activityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this.context);
                 editText.setText(place.getName());
+                return place;
             }
         }
+        return null;
     }
 
     public void startPicker() {
@@ -52,6 +55,10 @@ public class LocationPicker implements View.OnClickListener, View.OnFocusChangeL
 
     public String getText() {
         return editText.getText().toString();
+    }
+
+    public void setText(String string) {
+        editText.setText(string);
     }
 
     @Override

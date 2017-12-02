@@ -74,7 +74,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textLocation"
+        android:id="@+id/textViewLocation"
         android:layout_below="@+id/textDOB"
         android:layout_alignParentStart="true"
         android:layout_marginTop="5dp"
@@ -94,6 +94,6 @@
         android:layout_alignEnd="@+id/buttonFinish"
         android:hint="Tell us about yourself"
         android:paddingLeft="5dp"
-        android:layout_below="@+id/textLocation" />
+        android:layout_below="@+id/textViewLocation" />
 
 </RelativeLayout>

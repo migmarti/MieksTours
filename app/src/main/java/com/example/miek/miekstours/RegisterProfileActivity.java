@@ -20,6 +20,7 @@ import com.example.miek.miekstours.Classes.DateTextPicker;
 import com.example.miek.miekstours.Classes.LocationPicker;
 import com.example.miek.miekstours.Classes.UserAccount;
 import com.example.miek.miekstours.Classes.Utils;
+import com.google.android.gms.location.places.Place;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class RegisterProfileActivity extends AppCompatActivity {
         lastNameText = (EditText) findViewById(R.id.textLastName);
         dobText = new DateTextPicker(this, (EditText) findViewById(R.id.textDOB));
         descriptionText = (EditText) findViewById(R.id.textDescription);
-        locationText = new LocationPicker(this, (EditText) findViewById(R.id.textLocation));
+        locationText = new LocationPicker(this, (EditText) findViewById(R.id.textViewLocation));
 
         Bundle extras = getIntent().getExtras();
         email = extras.getString(db.KEY_EMAIL);
@@ -58,18 +59,18 @@ public class RegisterProfileActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                verifyFields(view);
+                verifyFields();
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        locationText.activityResult(requestCode, resultCode, data);
+        Place place = locationText.activityResult(requestCode, resultCode, data);
     }
 
 
-    private void verifyFields(final View view) {
+    private void verifyFields() {
         firstName = firstNameText.getText().toString();
         lastName = lastNameText.getText().toString();
         dob = dobText.getText().toString();

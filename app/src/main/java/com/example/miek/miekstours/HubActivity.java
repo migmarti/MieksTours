@@ -13,14 +13,16 @@ import com.example.miek.miekstours.Classes.DateTextPicker;
 import com.example.miek.miekstours.Classes.LocationPicker;
 import com.example.miek.miekstours.Classes.UserAccount;
 import com.example.miek.miekstours.Classes.Utils;
+import com.google.android.gms.location.places.Place;
 
 public class HubActivity extends AppCompatActivity {
 
     TextView welcomeText;
     LocationPicker locationText;
     DateTextPicker endDateText, startDateText;
-    Button editProfileButton, signOutButton;
+    Button editProfileButton, signOutButton, findHostsButton;
     UserAccount currentUser;
+    Place place;
     DatabaseHandler db;
 
     @Override
@@ -29,15 +31,22 @@ public class HubActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hub);
 
         db = new DatabaseHandler(getApplicationContext());
-        currentUser = Utils.getCurrentUser(db);
+        currentUser = db.getCurrentUser();
         welcomeText = (TextView) findViewById(R.id.textWelcome);
         welcomeText.setText("Welcome " + currentUser.getFirstName());
         locationText = new LocationPicker(this, (EditText) findViewById(R.id.locationText));
         endDateText = new DateTextPicker(this, (EditText) findViewById(R.id.endDateText));
         startDateText = new DateTextPicker(this, (EditText) findViewById(R.id.startDateText));
 
+        findHostsButton = (Button) findViewById(R.id.buttonFindHosts);
         editProfileButton = (Button) findViewById(R.id.buttonEditProfile);
         signOutButton = (Button) findViewById(R.id.buttonSignOut);
+        findHostsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.executeActivity(getApplicationContext(), null, AvailableHostsActivity.class);
+            }
+        });
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,7 +63,7 @@ public class HubActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        locationText.activityResult(requestCode, resultCode, data);
+        place = locationText.activityResult(requestCode, resultCode, data);
     }
 
     public void signOut() {

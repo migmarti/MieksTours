@@ -1,9 +1,7 @@
 package com.example.miek.miekstours;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -37,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         db = new DatabaseHandler(getApplicationContext());
-        currentUser = Utils.getCurrentUser(db);
+        currentUser = db.getCurrentUser();
         if (currentUser.getId() != null) {
             Utils.executeActivity(getApplicationContext(), LoginActivity.this, HubActivity.class);
         }
@@ -50,7 +48,9 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin(view);
+                if (Utils.validateEmailPassword(LoginActivity.this, emailText, passwordText)) {
+                    validateCredentials(emailText.getText().toString(), passwordText.getText().toString());
+                }
             }
         });
         registerButton.setOnClickListener(new OnClickListener() {
@@ -61,56 +61,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void attemptLogin(View view) {
-
-        emailText.setError(null);
-        passwordText.setError(null);
-
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            passwordText.setError(getString(R.string.error_invalid_password));
-            focusView = passwordText;
-            cancel = true;
-        }
-
-        if (TextUtils.isEmpty(email)) {
-            emailText.setError(getString(R.string.error_field_required));
-            focusView = emailText;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            emailText.setError(getString(R.string.error_invalid_email));
-            focusView = emailText;
-            cancel = true;
-        }
-
-        if (cancel) {
-            focusView.requestFocus();
-        } else {
-            Snackbar.make(view, "Attempting Login...", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-            validateCredentials(view, email, password);
-        }
-    }
-
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 6;
-    }
-
-    private void validateCredentials(final View view, final String email, final String password) {
+    private void validateCredentials(final String email, final String password) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if(response.trim().contains("UserId")){
-                            Snackbar.make(view, "Success!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                             UserAccount user = new UserAccount(response, db);
                             db.addUser(user);
                             Utils.executeActivity(getApplicationContext(), LoginActivity.this, HubActivity.class);

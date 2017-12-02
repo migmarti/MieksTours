@@ -96,15 +96,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         cursor.close();
-        System.out.println("DEBUG: " + accounts.size());
-        return accounts.get(0);
+        if (accounts.size() > 0){
+            return accounts.get(0);
+        }
+        else {
+            return new UserAccount();
+        }
     }
 
     public void deleteAllUsers() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+ TABLE_USERS);
         db.close();
-        System.out.println("DEBUG: DELETEALL");
     }
 
     private UserAccount parseAccount(Cursor cursor) {
@@ -134,7 +137,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_LOCATION, location);
         values.put(KEY_DESCRIPTION, description);
         values.put(KEY_HOSTING, hosting);
-        db.update(TABLE_USERS, values, "_id="+id, null);
+        db.update(TABLE_USERS, values, KEY_USERID +"=\""+id+"\"", null);
         db.close();
     }
 

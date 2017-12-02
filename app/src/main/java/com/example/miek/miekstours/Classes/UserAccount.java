@@ -47,9 +47,9 @@ public class UserAccount implements Parcelable {
             this.lastName = jObject.getString(db.KEY_LASTNAME);
             this.dob = jObject.getString(db.KEY_DOB);
             this.description = jObject.getString(db.KEY_DESCRIPTION);
+            this.location = jObject.getString(db.KEY_LOCATION);
             this.hostingStatus = jObject.getInt(db.KEY_HOSTING);
             this.rate = jObject.getDouble(db.KEY_RATE);
-            this.location = jObject.getString(db.KEY_LOCATION);
         } catch (JSONException e) {
             e.printStackTrace();
         }
