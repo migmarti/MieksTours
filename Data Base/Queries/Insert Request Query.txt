@@ -1,0 +1,4 @@
+INSERT INTO Requests 
+(HostId, TravelerId, StartDate, EndDate, Comment, StatusId)
+VALUES
+('$HostId', '$TravelerId', '$StartDate', '$EndDate', '$Comment', '$StatusId')
