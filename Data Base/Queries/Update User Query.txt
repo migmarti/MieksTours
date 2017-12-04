@@ -1,0 +1,9 @@
+UPDATE USERS set 
+email = " . $email . ",
+password = " . $password .",
+FirstName = " . $FirstName . ",
+LastName = " . $LastName . ", 
+DoB = " . $DoB . " , 
+Location = " . $Location . ", 
+Description = " . $Description . " 
+WHERE UserId = " . $UserId ."
