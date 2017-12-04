@@ -96,6 +96,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         cursor.close();
+        db.close();
         if (accounts.size() > 0){
             return accounts.get(0);
         }
@@ -139,6 +140,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_HOSTING, hosting);
         db.update(TABLE_USERS, values, KEY_USERID +"=\""+id+"\"", null);
         db.close();
+    }
+
+    public void updateHost() {
+
     }
 
 }

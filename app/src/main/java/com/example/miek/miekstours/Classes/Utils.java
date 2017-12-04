@@ -8,9 +8,22 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.miek.miekstours.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by MMART on 11/27/2017.
@@ -36,21 +49,22 @@ public class Utils {
 
     public static Boolean validateEmailPassword(Context context, EditText emailText, EditText passwordText) {
 
-        emailText.setError(null);
-        String email = emailText.getText().toString();
-
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(email)) {
-            emailText.setError(context.getString(R.string.error_field_required));
-            focusView = emailText;
-            cancel = true;
-        }
-        else if (!isEmailValid(email)) {
-            emailText.setError(context.getString(R.string.error_invalid_email));
-            focusView = emailText;
-            cancel = true;
+        if (emailText != null) {
+            emailText.setError(null);
+            String email = emailText.getText().toString();
+
+            if (TextUtils.isEmpty(email)) {
+                emailText.setError(context.getString(R.string.error_field_required));
+                focusView = emailText;
+                cancel = true;
+            } else if (!isEmailValid(email)) {
+                emailText.setError(context.getString(R.string.error_invalid_email));
+                focusView = emailText;
+                cancel = true;
+            }
         }
 
         if (passwordText != null) {
@@ -102,11 +116,104 @@ public class Utils {
         }
     }
 
+    public static Boolean validateLocation(Context context, LocationPicker picker) {
+        EditText pickerText = picker.getEditText();
+        pickerText.setError(null);
+
+        Boolean cancel = false;
+        View focusView = null;
+
+
+
+        return false;
+    }
+
+    public static Boolean validateDates(Context context, DateTextPicker start, DateTextPicker end) {
+        Date startDate = start.getCurrentDate();
+        Date endDate = end.getCurrentDate();
+        EditText startText = start.getEditText();
+        EditText endText = end.getEditText();
+        startText.setError(null);
+        endText.setError(null);
+        SimpleDateFormat sdFormat = start.getSimpleDateFormat();
+        String todayString =  sdFormat.format(new Date());
+        Date todayDate = new Date();
+        try {
+            todayDate = sdFormat.parse(todayString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Boolean cancel = false;
+
+        if (TextUtils.isEmpty(startText.getText().toString())) {
+            startText.setError(context.getString(R.string.error_field_required));
+            cancel = true;
+        }
+        else if (TextUtils.isEmpty(endText.getText().toString())) {
+            endText.setError(context.getString(R.string.error_field_required));
+            cancel = true;
+        }
+        else if (startDate.after(endDate)) {
+            startText.setError("Start date cannot be after end date.");
+            cancel = true;
+        }
+        else if (startDate.before(todayDate)) {
+            startText.setError("Start date cannot be earlier than today.");
+            cancel = true;
+        }
+        else if (endDate.before(todayDate)) {
+            endText.setError("End date cannot be earlier than today.");
+            cancel = true;
+        }
+
+        if (cancel) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private static boolean isEmailValid(String email) {
         return email.contains("@");
     }
 
     private static boolean isPasswordValid(String password) {
         return password.length() > 6;
+    }
+
+    public static void checkHost(final Activity activity, final String id, final String num, final String startDate, final String endDate,
+                           RequestQueue queue) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://tecnami.com/miekstours/api/check_host.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (Objects.equals(num, "0")) {
+                            Utils.showAlert("Success", "You are no longer hosting.", activity);
+                        }
+                        else if (Objects.equals(num, "1")) {
+                            Utils.showAlert("Success", "You are now hosting!", activity);
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Utils.showAlert("Technical Error", error.toString(), activity);
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("UserId", id);
+                params.put("startDate", startDate);
+                params.put("endDate", startDate);
+                params.put("HostingStatus", num);
+                return params;
+            }
+        };
+        queue = Volley.newRequestQueue((Context) activity);
+        queue.add(stringRequest);
     }
 }

@@ -41,7 +41,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/startDateText"
         android:layout_centerVertical="true"
         android:layout_alignStart="@+id/textView11"
         android:layout_alignEnd="@+id/textView11"
@@ -51,11 +51,11 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
-        android:layout_below="@+id/editText"
+        android:id="@+id/endDateText"
+        android:layout_below="@+id/startDateText"
         android:layout_marginTop="29dp"
-        android:layout_alignStart="@+id/editText"
-        android:layout_alignEnd="@+id/editText"
+        android:layout_alignStart="@+id/startDateText"
+        android:layout_alignEnd="@+id/startDateText"
         android:hint="Set an end date"
         android:textAlignment="center" />
 

@@ -3,6 +3,8 @@ package com.example.miek.miekstours.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.location.places.Place;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +22,7 @@ public class UserAccount implements Parcelable {
     String location;
     int hostingStatus;
     double rate;
+    Place place;
     //
     public UserAccount() {
 
@@ -55,7 +58,7 @@ public class UserAccount implements Parcelable {
         }
     }
 
-    protected UserAccount(Parcel in) {
+    public UserAccount(Parcel in) {
         id = in.readString();
         email = in.readString();
         password = in.readString();

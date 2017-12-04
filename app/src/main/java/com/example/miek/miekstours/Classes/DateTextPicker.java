@@ -7,9 +7,10 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
+import java.util.Date;
 
 /**
  * Created by MMART on 11/27/2017.
@@ -19,6 +20,8 @@ public class DateTextPicker implements View.OnClickListener, DatePickerDialog.On
     private EditText editText;
     private Calendar myCalendar;
     private Context context;
+    private Date currentDate;
+    private SimpleDateFormat sdFormat;
 
     public DateTextPicker(Context context, EditText editText){
         this.editText = editText;
@@ -26,6 +29,7 @@ public class DateTextPicker implements View.OnClickListener, DatePickerDialog.On
         this.editText.setOnFocusChangeListener(this);
         this.editText.setInputType(InputType.TYPE_NULL);
         this.context = context;
+        this.sdFormat = new SimpleDateFormat("yyyy-MM-dd");
         myCalendar = Calendar.getInstance();
     }
 
@@ -33,19 +37,36 @@ public class DateTextPicker implements View.OnClickListener, DatePickerDialog.On
         return editText.getText().toString();
     }
 
+    public EditText getEditText() {
+        return editText;
+    }
+
     public void setText(String string) {
         editText.setText(string);
     }
 
+    public SimpleDateFormat getSimpleDateFormat() {
+        return sdFormat;
+    }
+
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)     {
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdformat = new SimpleDateFormat(myFormat, Locale.US);
         myCalendar.set(Calendar.YEAR, year);
         myCalendar.set(Calendar.MONTH, monthOfYear);
         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        editText.setText(sdformat.format(myCalendar.getTime()));
+        String dateString = sdFormat.format(myCalendar.getTime());
+        editText.setText(dateString);
+        try {
+            this.currentDate = sdFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
 
     @Override
     public void onClick(View v) {

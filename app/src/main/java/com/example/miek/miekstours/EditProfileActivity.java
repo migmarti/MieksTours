@@ -3,6 +3,7 @@ package com.example.miek.miekstours;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +28,7 @@ import java.util.Objects;
 
 public class EditProfileActivity extends AppCompatActivity {
     UserAccount currentUser;
-    EditText emailText, passwordText, confirmPasswordText, firstNameText, lastNameText, descriptionText;
+    EditText passwordText, confirmPasswordText, firstNameText, lastNameText, descriptionText;
     DateTextPicker dobText;
     LocationPicker locationText;
     Button buttonAccept, buttonInterests, buttonBecomeHost;
@@ -46,8 +47,8 @@ public class EditProfileActivity extends AppCompatActivity {
         currentUser = db.getCurrentUser();
         queue = Volley.newRequestQueue(this);
 
-        emailText = (EditText) findViewById(R.id.emailText);
-        emailText.setEnabled(false);
+        //emailText = (EditText) findViewById(R.id.emailText);
+        //emailText.setEnabled(false);
         passwordText = (EditText) findViewById(R.id.passwordText);
         confirmPasswordText = (EditText) findViewById(R.id.confirmPasswordText);
         firstNameText = (EditText) findViewById(R.id.firstNameText);
@@ -56,7 +57,7 @@ public class EditProfileActivity extends AppCompatActivity {
         locationText = new LocationPicker(this, (EditText) findViewById(R.id.locationText));
         descriptionText = (EditText) findViewById(R.id.descriptionText);
 
-        emailText.setText(currentUser.getEmail());
+        //emailText.setText(currentUser.getEmail());
         firstNameText.setText(currentUser.getFirstName());
         lastNameText.setText(currentUser.getLastName());
         dobText.setText(currentUser.getDob());
@@ -69,7 +70,7 @@ public class EditProfileActivity extends AppCompatActivity {
         buttonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                email = emailText.getText().toString();
+                email = currentUser.getEmail();
                 password = passwordText.getText().toString();
                 confirmPassword = confirmPasswordText.getText().toString();
                 firstName = firstNameText.getText().toString();
@@ -90,7 +91,12 @@ public class EditProfileActivity extends AppCompatActivity {
         buttonBecomeHost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.executeActivity(getApplicationContext(), null, BecomeHostActivity.class);
+                if (!TextUtils.isEmpty(locationText.getText())) {
+                    Utils.executeActivity(getApplicationContext(), null, BecomeHostActivity.class);
+                }
+                else {
+                    locationText.getEditText().setError(getBaseContext().getString(R.string.error_field_required));
+                }
             }
         });
     }
@@ -100,11 +106,11 @@ public class EditProfileActivity extends AppCompatActivity {
         Boolean updatePassword = false;
 
         if (password != null && password.length() > 0) {
-            check = Utils.validateEmailPassword(EditProfileActivity.this, emailText, passwordText);
+            check = Utils.validateEmailPassword(EditProfileActivity.this, null, passwordText);
             updatePassword = true;
         }
         else {
-            check = Utils.validateEmailPassword(EditProfileActivity.this, emailText, null);
+            check = true;
         }
 
         if (check && Utils.validateInformation(EditProfileActivity.this, firstNameText, lastNameText,
@@ -167,6 +173,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 return params;
             }
         };
+        queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
 
