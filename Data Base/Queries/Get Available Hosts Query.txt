@@ -1,0 +1,7 @@
+SELECT *  
+FROM Users 
+WHERE startDate >= STR_TO_DATE('$startDate', '%d/%m/%Y') 
+AND endDate <= STR_TO_DATE('$endDate','%d/%m/%Y')
+AND (Latitud BETWEEN '$Lat1' AND '$Lat2)
+AND (Longitud BETWEEN '$Long1' AND '$Long2)
+AND HostingStatus = 1
