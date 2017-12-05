@@ -12,7 +12,7 @@ include_once '../con.php';
 		}
 
 		function get_ints(){
-				$query = "SELECT * FROM Interests";
+				$query = "SELECT * FROM Interests ORDER BY Name";
 				$result = mysqli_query($this -> connection, $query);
 				while($row = $result->fetch_assoc()){
 				     $json[] = $row;

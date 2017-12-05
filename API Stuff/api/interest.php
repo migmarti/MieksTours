@@ -13,14 +13,19 @@ include_once '../con.php';
 		
 		public function int_by_id($UserId)
 		{
-				$query = mysql_query("SELECT Name from Interests WHERE UserId = '$UserId'");
+				$query = "SELECT usr.FirstName, intr.Name 
+				FROM Users usr, UserInterests uxi, Interests intr 
+				WHERE usr.UserId = uxi.UserId 
+				AND intr.InterestId = uxi.InterestId
+				AND usr.UserId = '$UserId'";
 
 				$result = mysqli_query($this -> connection, $query);
-
-				$data = $result->fetch_assoc();
+				while($row = $result->fetch_assoc()){
+				     $json[] = $row;
+				}
+				$data['data'] = $json;
 				echo json_encode($data);
 				mysqli_close($this -> connection);
-
 		}
 		
 	}

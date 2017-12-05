@@ -11,9 +11,9 @@ include_once '../con.php';
 			$this -> connection = $this->db->getConnection();
 		}
 		
-		public function does_user_exist($UserId,$email,$password,$FirstName,$LastName,$DoB,$Location,$Description)
+		public function does_user_exist($UserId,$email,$password,$FirstName,$LastName,$DoB,$Location,$Description,$Longitud,$Latitud)
 		{
-				$query = "insert into Users (UserId,email,password,FirstName,LastName,DoB,Location,Description) values ('$UserId','$email','$password','$FirstName','$LastName','$DoB','$Location','$Description')";
+				$query = "INSERT INTO Users (UserId,email,password,FirstName,LastName,DoB,Location,Description,Longitud,Latitud) values ('$UserId','$email','$password','$FirstName','$LastName','$DoB','$Location','$Description','$Longitud','$Latitud')";
 				$inserted = mysqli_query($this -> connection, $query);
 				if($inserted == 1 ){
 					$json['success'] = 'Account created';
@@ -38,9 +38,11 @@ include_once '../con.php';
 		$DoB = $_POST['DoB'];
 		$Location = $_POST['Location'];
 		$Description = $_POST['Description'];
+		$Latitud = $_POST['Latitud'];
+		$Longitud = $_POST['Longitud'];
 		
 		if(!empty($email) && !empty($password)){
-			$user-> does_user_exist($UserId,$email,$password,$FirstName,$LastName,$DoB,$Location,$Description);
+			$user-> does_user_exist($UserId,$email,$password,$FirstName,$LastName,$DoB,$Location,$Description,$Longitud,$Latitud);
 			
 		}else{
 			echo json_encode("you must type both inputs");
