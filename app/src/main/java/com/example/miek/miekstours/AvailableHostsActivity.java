@@ -26,11 +26,14 @@ public class AvailableHostsActivity extends AppCompatActivity {
         db = new DatabaseHandler(getApplicationContext());
         currentUser = db.getCurrentUser();
 
+        String startDate = this.getIntent().getStringExtra("StartDate");
+        String endDate = this.getIntent().getStringExtra("EndDate");
+        hosts = this.getIntent().getParcelableArrayListExtra("Parcel");
+
         hostList = (ListView) findViewById(R.id.listViewHosts);
-        adapter = new UserAdapter(this);
+        adapter = new UserAdapter(this, startDate, endDate);
         hostList.setAdapter(adapter);
 
-        hosts = this.getIntent().getParcelableArrayListExtra("Parcel");
         fillList(hosts);
     }
 

@@ -98,7 +98,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isHost) {
-                    Utils.checkHost(EditProfileActivity.this, currentUser.getId(), "0", "", "", queue, db);
+                    Utils.checkHost(EditProfileActivity.this, currentUser.getId(), "0", "0000-00-00", "0000-00-00", queue, db);
                     isHost = false;
                     currentUser.setHostingStatus(0);
                     buttonBecomeHost.setText("Become Host");
@@ -151,13 +151,20 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Place place = locationText.activityResult(requestCode, resultCode, data);
-        LatLng geo = place.getLatLng();
-        lat = geo.latitude;
-        lng = geo.longitude;
+        if (place != null) {
+            LatLng geo = place.getLatLng();
+            lat = geo.latitude;
+            lng = geo.longitude;
+        }
     }
 
     private void editProfile(final String userId, final String password) {
         System.out.println("DEBUG: Entered edit profile");
+        if (lat != null && lng != null) {
+            db.updateLatLong(currentUser.getId(), lat, lng);
+            currentUser.setLatitude(lat);
+            currentUser.setLongitude(lng);
+        }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, EDITPROFILE_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -185,6 +192,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 params.put(db.KEY_DOB, dob);
                 params.put(db.KEY_LOCATION, location);
                 params.put(db.KEY_DESCRIPTION, description);
+                params.put(db.KEY_LAT, "" + currentUser.getLatitude());
+                params.put(db.KEY_LONG, "" + currentUser.getLongitude());
                 return params;
             }
         };

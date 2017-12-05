@@ -70,9 +70,11 @@ public class RegisterProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Place place = locationText.activityResult(requestCode, resultCode, data);
-        LatLng geo = place.getLatLng();
-        lat = geo.latitude;
-        lng = geo.longitude;
+        if (place != null) {
+            LatLng geo = place.getLatLng();
+            lat = geo.latitude;
+            lng = geo.longitude;
+        }
     }
 
 
@@ -121,6 +123,8 @@ public class RegisterProfileActivity extends AppCompatActivity {
                 params.put(db.KEY_DOB, dob);
                 params.put(db.KEY_LOCATION, location);
                 params.put(db.KEY_DESCRIPTION, description);
+                params.put(db.KEY_LAT, "" + lat);
+                params.put(db.KEY_LONG, "" + lng);
                 return params;
             }
         };

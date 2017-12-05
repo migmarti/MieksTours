@@ -15,7 +15,7 @@ import java.util.ArrayList;
 //DatabaseHandler DBHelper = new DatabaseHandler(getApplicationContext());
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "MiekToursLocalDB2";
     private static final String TABLE_USERS = "Users";
     public final String KEY_USERID = "UserId";
@@ -28,6 +28,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public final String KEY_DESCRIPTION = "Description";
     public final String KEY_HOSTING = "HostingStatus";
     public final String KEY_RATE = "Rate";
+    public final String KEY_LAT = "Latitud";
+    public final String KEY_LONG = "Longitud";
     public String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
             + KEY_USERID + " TEXT PRIMARY KEY, "
             + KEY_FIRSTNAME + " TEXT, "
@@ -38,7 +40,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + KEY_LOCATION + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_HOSTING + " INTEGER, "
-            + KEY_RATE + " REAL"
+            + KEY_LAT + " REAL, "
+            + KEY_LONG + " REAL, "
+            + KEY_RATE + " REAL "
             + ")";
     private String[] USER_TABLE_COLUMNS =
             {
@@ -51,6 +55,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     KEY_LOCATION,
                     KEY_DESCRIPTION,
                     KEY_HOSTING,
+                    KEY_LAT,
+                    KEY_LONG,
                     KEY_RATE
             };
 
@@ -82,6 +88,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_DESCRIPTION, account.getDescription());
         values.put(KEY_HOSTING, account.getHostingStatus());
         values.put(KEY_RATE, account.getRate());
+        values.put(KEY_LONG, account.getLongitude());
+        values.put(KEY_LAT, account.getLatitude());
         db.insert(TABLE_USERS, null, values);
         db.close();
     }
@@ -123,6 +131,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         user.setDescription(cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION)));
         user.setRate(cursor.getDouble(cursor.getColumnIndex(KEY_RATE)));
         user.setLocation(cursor.getString(cursor.getColumnIndex(KEY_LOCATION)));
+        user.setLatitude(cursor.getDouble(cursor.getColumnIndex(KEY_LAT)));
+        user.setLongitude(cursor.getDouble(cursor.getColumnIndex(KEY_LONG)));
         return user;
     }
 
@@ -146,6 +156,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_HOSTING, hostStatus);
+        db.update(TABLE_USERS, values, KEY_USERID +"=\""+id+"\"", null);
+        db.close();
+    }
+
+    public void updateLatLong(String id, Double lat, Double lng) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_LAT, lat);
+        values.put(KEY_LONG, lng);
         db.update(TABLE_USERS, values, KEY_USERID +"=\""+id+"\"", null);
         db.close();
     }

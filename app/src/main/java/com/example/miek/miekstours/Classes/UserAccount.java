@@ -20,8 +20,12 @@ public class UserAccount implements Parcelable {
     String dob;
     String description;
     String location;
+    String startDate;
+    String endDate;
     int hostingStatus = 0;
     double rate = 0.0;
+    double latitude = 0.0;
+    double longitude = 0.0;
     ArrayList<String> interests = new ArrayList<String>();
     //
     public UserAccount() {
@@ -52,6 +56,10 @@ public class UserAccount implements Parcelable {
             this.description = jObject.getString(db.KEY_DESCRIPTION);
             this.location = jObject.getString(db.KEY_LOCATION);
             this.hostingStatus = jObject.getInt(db.KEY_HOSTING);
+            this.latitude = jObject.getDouble(db.KEY_LAT);
+            this.longitude = jObject.getDouble(db.KEY_LONG);
+            this.startDate = jObject.getString("startDate");
+            this.endDate = jObject.getString("endDate");
             this.rate = jObject.getDouble(db.KEY_RATE);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -68,6 +76,9 @@ public class UserAccount implements Parcelable {
         description = in.readString();
         hostingStatus = in.readInt();
         rate = in.readDouble();
+        location = in.readString();
+        startDate = in.readString();
+        endDate = in.readString();
     }
 
     public static final Creator<UserAccount> CREATOR = new Creator<UserAccount>() {
@@ -142,18 +153,36 @@ public class UserAccount implements Parcelable {
     public void setLocation(String location) {
         this.location = location;
     }
-    public JSONObject toJSON(){
-        JSONObject jsonObject= new JSONObject();
-        try {
-            jsonObject.put("email", getEmail());
-            jsonObject.put("password", getPassword());
-            return jsonObject;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public double getLatitude() {
+        return latitude;
     }
-
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+    public double getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(double longitud) {
+        this.longitude = longitud;
+    }
+    public String getStartDate() {
+        return startDate;
+    }
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+    public String getEndDate() {
+        return endDate;
+    }
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+    public ArrayList<String> getInterests() {
+        return this.interests;
+    }
+    public void setInterests(ArrayList<String> interests) {
+        this.interests = interests;
+    }
     @Override
     public int describeContents() {
         return 0;
@@ -170,13 +199,8 @@ public class UserAccount implements Parcelable {
         dest.writeString(description);
         dest.writeInt(hostingStatus);
         dest.writeDouble(rate);
-    }
-
-    public ArrayList<String> getInterests() {
-        return this.interests;
-    }
-
-    public void setInterests(ArrayList<String> interests) {
-        this.interests = interests;
+        dest.writeString(location);
+        dest.writeString(startDate);
+        dest.writeString(endDate);
     }
 }

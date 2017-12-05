@@ -14,19 +14,28 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Host First and Last Name, Age"
-        android:id="@+id/textView13"
+        android:id="@+id/textViewTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="125dp"
+        android:id="@+id/imageView2"
+        android:src="@android:drawable/ic_menu_myplaces"
+        android:layout_below="@+id/textViewTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Hosting At:"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/textView13"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:id="@+id/textViewHostingAt"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -37,42 +46,36 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
-        android:src="@android:drawable/ic_menu_report_image"
-        android:layout_alignTop="@+id/textView4"
-        android:layout_alignEnd="@+id/buttonRequest" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="From Date:"
-        android:id="@+id/textView14"
-        android:layout_below="@+id/textView4"
+        android:id="@+id/textViewFromDate"
+        android:layout_below="@+id/textViewHostingAt"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="To Date:"
-        android:id="@+id/textView15"
-        android:layout_below="@+id/textView14"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/textViewToDate"
+        android:layout_below="@+id/textViewFromDate"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Likes:"
-        android:id="@+id/textView16"
-        android:layout_below="@+id/textView15"
+        android:id="@+id/textViewLikes"
+        android:layout_below="@+id/textViewToDate"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/holo_blue_dark" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -80,25 +83,37 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Description:"
         android:id="@+id/textView17"
-        android:layout_below="@+id/textView16"
+        android:layout_below="@+id/textViewLikes"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/black" />
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView17"
         android:layout_above="@+id/buttonRequest"
-        android:layout_alignEnd="@+id/buttonRequest">
+        android:layout_alignEnd="@+id/buttonRequest"
+        android:fillViewport="false"
+        android:layout_below="@+id/textView17">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Text Here"
-            android:id="@+id/textView18" />
+            android:id="@+id/textViewDescription" />
     </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Email"
+        android:id="@+id/textViewEmail"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/textViewTitle"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
