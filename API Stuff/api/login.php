@@ -13,7 +13,7 @@ include_once '../con.php';
 		
 		public function does_user_exist($email,$password)
 		{
-			$query = "Select * from Users where email='$email' and password = '$password' ";
+			$query = "SELECT * FROM Users WHERE email='$email' AND password = '$password' ";
 			$result = mysqli_query($this->connection, $query);
 
 			if(mysqli_num_rows($result)>0){
