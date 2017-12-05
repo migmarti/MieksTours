@@ -28,10 +28,10 @@ import java.util.ArrayList;
 
 public class HubActivity extends AppCompatActivity {
 
-    TextView infoText;
+    TextView infoText, welcomeText, hostText;
     LocationPicker locationText;
     DateTextPicker endDateText, startDateText;
-    Button editProfileButton, signOutButton, findHostsButton;
+    Button editProfileButton, signOutButton, findHostsButton, buttonViewRequests;
     UserAccount currentUser;
     ArrayList<UserAccount> hosts;
     Place place;
@@ -49,28 +49,48 @@ public class HubActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
 
         infoText = (TextView) findViewById(R.id.textViewInfo);
+        welcomeText = (TextView) findViewById(R.id.textWelcome);
+        hostText = (TextView) findViewById(R.id.textViewHost);
         infoText.setText("Logged in as: " + currentUser.getEmail());
-        //welcomeText.setText("Welcome " + currentUser.getFirstName());
+        welcomeText.setText("Welcome " + currentUser.getFirstName() + "!");
+        if (currentUser.getHostingStatus() == 0) {
+            hostText.setText("You are currently a Traveler");
+        }
+        else {
+            hostText.setText("You are currently a Host");
+        }
         locationText = new LocationPicker(this, (EditText) findViewById(R.id.locationText));
         endDateText = new DateTextPicker(this, (EditText) findViewById(R.id.endDateText));
         startDateText = new DateTextPicker(this, (EditText) findViewById(R.id.startDateText));
 
         findHostsButton = (Button) findViewById(R.id.buttonFindHosts);
+        if (currentUser.getHostingStatus() == 1) {
+            findHostsButton.setEnabled(false);
+        }
+        else {
+            findHostsButton.setEnabled(true);
+        }
         editProfileButton = (Button) findViewById(R.id.buttonEditProfile);
         signOutButton = (Button) findViewById(R.id.buttonSignOut);
+        buttonViewRequests = (Button) findViewById(R.id.buttonViewRequests);
         findHostsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (Utils.validateDates(HubActivity.this, startDateText, endDateText)) {
-                    getHosts();
+                    //getHosts();
                 }
             }
         });
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Utils.executeActivity(getApplicationContext(), null, EditProfileActivity.class);
+                Utils.executeActivity(getApplicationContext(), HubActivity.this, EditProfileActivity.class);
+            }
+        });
+        buttonViewRequests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.executeActivity(getApplicationContext(), null, RequestsActivity.class);
             }
         });
         signOutButton.setOnClickListener(new View.OnClickListener() {

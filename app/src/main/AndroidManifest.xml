@@ -37,7 +37,8 @@
         <activity android:name=".InterestsActivity" />
         <activity android:name=".BecomeHostActivity" />
         <activity android:name=".AvailableHostsActivity" />
-        <activity android:name=".HostProfileActivity"></activity>
+        <activity android:name=".HostProfileActivity" />
+        <activity android:name=".RequestsActivity"></activity>
     </application>
 
 </manifest>

@@ -30,7 +30,8 @@
         android:text="SIGN OUT"
         android:id="@+id/buttonSignOut"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:width="125dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -39,13 +40,14 @@
         android:text="EDIT PROFILE"
         android:id="@+id/buttonEditProfile"
         android:layout_alignTop="@+id/buttonSignOut"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:width="125dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/locationText"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:layout_below="@+id/textWelcome"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="20dp"
@@ -99,5 +101,24 @@
         android:id="@+id/textViewInfo"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Requests"
+        android:id="@+id/buttonViewRequests"
+        android:layout_below="@+id/buttonFindHosts"
+        android:layout_alignStart="@+id/buttonFindHosts"
+        android:layout_alignEnd="@+id/buttonFindHosts" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewHost"
+        android:layout_below="@+id/textWelcome"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:textAlignment="center"
+        android:text="Host or Traveller" />
 
 </RelativeLayout>

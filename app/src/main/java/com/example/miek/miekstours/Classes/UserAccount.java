@@ -3,10 +3,10 @@ package com.example.miek.miekstours.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.gms.location.places.Place;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by MMART on 11/10/2017.
@@ -20,9 +20,9 @@ public class UserAccount implements Parcelable {
     String dob;
     String description;
     String location;
-    int hostingStatus;
-    double rate;
-    Place place;
+    int hostingStatus = 0;
+    double rate = 0.0;
+    ArrayList<String> interests = new ArrayList<String>();
     //
     public UserAccount() {
 
@@ -170,5 +170,13 @@ public class UserAccount implements Parcelable {
         dest.writeString(description);
         dest.writeInt(hostingStatus);
         dest.writeDouble(rate);
+    }
+
+    public ArrayList<String> getInterests() {
+        return this.interests;
+    }
+
+    public void setInterests(ArrayList<String> interests) {
+        this.interests = interests;
     }
 }

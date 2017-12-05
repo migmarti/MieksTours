@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.GridView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,7 +27,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class InterestsActivity extends AppCompatActivity {
@@ -36,6 +36,8 @@ public class InterestsActivity extends AppCompatActivity {
     DatabaseHandler db;
     UserAccount currentUser;
     HashMap<String, String> interests;
+    ArrayList<String> userInterests = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
     String GETINTERESTS_URL = "http://tecnami.com/miekstours/api/get_interests.php";
     String INSERTINTERESTS_URL = "http://tecnami.com/miekstours/api/insert_interests.php";
     String USERINTERESTS_URL = "http://tecnami.com/miekstours/api/interest.php";
@@ -52,18 +54,54 @@ public class InterestsActivity extends AppCompatActivity {
 
         buttonAccept = (Button) findViewById(R.id.buttonAcceptInterests);
         buttonAccept.setEnabled(false);
-        getInterests();
+        getUserInterests();
         buttonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String stringInterests = appendInterests();
                 insertInterests(stringInterests);
-                System.out.println(stringInterests);
             }
         });
     }
 
-    private void getInterests() {
+    public void getUserInterests() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, USERINTERESTS_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //{"data":[{"FirstName":"Sam","Name":"Gastronomy"},{"FirstName":"Sam","Name":"Dating"},{"FirstName":"Sam","Name":"Culture"},{"FirstName":"Sam","Name":"Business"}]}
+                        try {
+                            JSONObject json = new JSONObject(response);
+                            JSONArray data = json.getJSONArray("data");
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject object = data.getJSONObject(i);
+                                String name = object.getString("Name");
+                                userInterests.add(name);
+                            }
+                            currentUser.setInterests(userInterests);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        getDatabaseInterests();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("MIEK USERACCOUNT GET INTERESTS ERROR: " + error.getMessage());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("UserId", currentUser.getId());
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+
+    private void getDatabaseInterests() {
         StringRequest stringRequest = new StringRequest(Method.GET, GETINTERESTS_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -80,13 +118,13 @@ public class InterestsActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-                            List<String> list = new ArrayList<>(interests.keySet());
+                            ArrayList<String> list = new ArrayList<>(interests.keySet());
                             Collections.sort(list);
                             grid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
-                            grid.setAdapter(new ArrayAdapter<>(InterestsActivity.this, android.R.layout.simple_list_item_multiple_choice,
-                                    list.toArray(new String[list.size()])));
-                            buttonAccept.setEnabled(true);
-                            checkInterests();
+                            adapter = new ArrayAdapter<>(InterestsActivity.this, android.R.layout.simple_list_item_multiple_choice,
+                                    list.toArray(new String[list.size()]));
+                            grid.setAdapter(adapter);
+                            checkInterests(list);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -99,8 +137,17 @@ public class InterestsActivity extends AppCompatActivity {
                     }
                 }){
         };
-        queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+
+    private void checkInterests(ArrayList<String> items) {
+        ArrayList<String> interests = currentUser.getInterests();
+        for (int i = 0; i < items.size(); i++) {
+            if (interests.contains(items.get(i))) {
+                grid.setItemChecked(i, true);
+            }
+        }
+        buttonAccept.setEnabled(true);
     }
 
     private void insertInterests(final String stringInterests) {
@@ -117,7 +164,7 @@ public class InterestsActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Utils.showAlert("Technical Error", error.getMessage(), InterestsActivity.this);
                     }
-                }){
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
@@ -125,35 +172,6 @@ public class InterestsActivity extends AppCompatActivity {
                 return params;
             }
         };
-        queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-
-    private void checkInterests() {
-        StringRequest stringRequest = new StringRequest(Method.POST, USERINTERESTS_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        //{"data":[{"FirstName":"Sam","Name":"Gastronomy"},{"FirstName":"Sam","Name":"Dating"},{"FirstName":"Sam","Name":"Culture"},{"FirstName":"Sam","Name":"Business"}]}
-                        System.out.println("MIEK RESPONSE: " + response);
-                        Utils.showAlert("Response", response, InterestsActivity.this);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Utils.showAlert("Technical Error", error.getMessage(), InterestsActivity.this);
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                System.out.println("MIEK CURRENT USER ID: " + currentUser.getId());
-                params.put("UserId", currentUser.getId());
-                return params;
-            }
-        };
-        queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
 

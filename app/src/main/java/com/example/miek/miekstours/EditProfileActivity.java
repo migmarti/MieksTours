@@ -21,6 +21,7 @@ import com.example.miek.miekstours.Classes.LocationPicker;
 import com.example.miek.miekstours.Classes.UserAccount;
 import com.example.miek.miekstours.Classes.Utils;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +34,9 @@ public class EditProfileActivity extends AppCompatActivity {
     LocationPicker locationText;
     Button buttonAccept, buttonInterests, buttonBecomeHost;
     String email, password, confirmPassword, firstName, lastName, description, location, dob;
+    Double lat, lng;
+    Boolean isHost = false;
     private String EDITPROFILE_URL = "http://tecnami.com/miekstours/api/edit_profile.php";
-    private String CHECKUSER_URL = "http://tecnami.com/miekstours/api/check_user.php";
     private DatabaseHandler db;
     private RequestQueue queue;
 
@@ -67,6 +69,10 @@ public class EditProfileActivity extends AppCompatActivity {
         buttonAccept = (Button) findViewById(R.id.buttonAccept);
         buttonInterests = (Button) findViewById(R.id.buttonInterests);
         buttonBecomeHost = (Button) findViewById(R.id.buttonBecomeHost);
+        if (currentUser.getHostingStatus() == 1) {
+            isHost = true;
+            buttonBecomeHost.setText("Cancel Hosting");
+        }
         buttonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,11 +97,18 @@ public class EditProfileActivity extends AppCompatActivity {
         buttonBecomeHost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!TextUtils.isEmpty(locationText.getText())) {
-                    Utils.executeActivity(getApplicationContext(), null, BecomeHostActivity.class);
+                if (isHost) {
+                    Utils.checkHost(EditProfileActivity.this, currentUser.getId(), "0", "", "", queue, db);
+                    isHost = false;
+                    currentUser.setHostingStatus(0);
+                    buttonBecomeHost.setText("Become Host");
                 }
                 else {
-                    locationText.getEditText().setError(getBaseContext().getString(R.string.error_field_required));
+                    if (!TextUtils.isEmpty(locationText.getText())) {
+                        Utils.executeActivity(getApplicationContext(), EditProfileActivity.this, BecomeHostActivity.class);
+                    } else {
+                        locationText.getEditText().setError(getBaseContext().getString(R.string.error_field_required));
+                    }
                 }
             }
         });
@@ -138,6 +151,9 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Place place = locationText.activityResult(requestCode, resultCode, data);
+        LatLng geo = place.getLatLng();
+        lat = geo.latitude;
+        lng = geo.longitude;
     }
 
     private void editProfile(final String userId, final String password) {
@@ -149,7 +165,6 @@ public class EditProfileActivity extends AppCompatActivity {
                         Utils.showAlert("Success", "Your account has been updated.", EditProfileActivity.this);
                         db.updateUser(currentUser.getId(), firstName, lastName, dob, password, email, location,
                                 description, currentUser.getHostingStatus());
-                        //finish();
                     }
                 },
                 new Response.ErrorListener() {
@@ -178,7 +193,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        finish();
+        Utils.executeActivity(getApplicationContext(), EditProfileActivity.this, HubActivity.class);
     }
 }
 

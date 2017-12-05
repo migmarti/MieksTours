@@ -2,7 +2,9 @@
 <resources>
 
     <style name="MieksTourTheme" parent="Theme.AppCompat.Light" >
-        <item name="colorPrimary">@android:color/holo_blue_light</item>
+        <item name="colorPrimary">@color/custom_color1</item>
         <item name="colorAccent">@android:color/holo_blue_bright</item>
+        <item name="colorButtonNormal">@color/custom_color1</item>
     </style>
+
 </resources>

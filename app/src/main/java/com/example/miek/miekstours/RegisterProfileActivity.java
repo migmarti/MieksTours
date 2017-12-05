@@ -21,6 +21,7 @@ import com.example.miek.miekstours.Classes.LocationPicker;
 import com.example.miek.miekstours.Classes.UserAccount;
 import com.example.miek.miekstours.Classes.Utils;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,8 @@ public class RegisterProfileActivity extends AppCompatActivity {
     private EditText firstNameText, lastNameText, descriptionText;
     private DateTextPicker dobText;
     private LocationPicker locationText;
+    private double lat;
+    private double lng;
     DatabaseHandler db;
 
     @Override
@@ -67,6 +70,9 @@ public class RegisterProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Place place = locationText.activityResult(requestCode, resultCode, data);
+        LatLng geo = place.getLatLng();
+        lat = geo.latitude;
+        lng = geo.longitude;
     }
 
 

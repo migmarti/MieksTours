@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="First Name Last Name"
+        android:text="First Name Last Name, Age"
         android:id="@+id/textViewNames" />
 
     <TextView
@@ -23,13 +23,6 @@
         android:text="Start Date to End Date"
         android:id="@+id/textViewDates" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Likes:"
-        android:id="@+id/textViewLikes" />
-
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
@@ -37,4 +30,5 @@
         android:text="VIEW PROFILE"
         android:id="@+id/button"
         android:layout_gravity="right" />
+
 </LinearLayout>

@@ -14,7 +14,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.miek.miekstours.R;
 
 import java.text.ParseException;
@@ -123,9 +122,25 @@ public class Utils {
         Boolean cancel = false;
         View focusView = null;
 
-
-
         return false;
+    }
+
+    public static Date parseDate(String dateString) {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date parsedDate = new Date();
+        try {
+            parsedDate = sdFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return parsedDate;
+    }
+
+    public static Date today() {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String todayString =  sdFormat.format(new Date());
+        Date todayDate = parseDate(todayString);
+        return todayDate;
     }
 
     public static Boolean validateDates(Context context, DateTextPicker start, DateTextPicker end) {
@@ -135,14 +150,7 @@ public class Utils {
         EditText endText = end.getEditText();
         startText.setError(null);
         endText.setError(null);
-        SimpleDateFormat sdFormat = start.getSimpleDateFormat();
-        String todayString =  sdFormat.format(new Date());
-        Date todayDate = new Date();
-        try {
-            todayDate = sdFormat.parse(todayString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Date todayDate = today();
 
         Boolean cancel = false;
 
@@ -183,18 +191,20 @@ public class Utils {
     }
 
     public static void checkHost(final Activity activity, final String id, final String num, final String startDate, final String endDate,
-                           RequestQueue queue) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://tecnami.com/miekstours/api/check_host.php",
+                                 final RequestQueue queue, final DatabaseHandler db) {
+
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://tecnami.com/miekstours/api/check_host.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (Objects.equals(num, "0")) {
-                            Utils.showAlert("Success", "You are no longer hosting.", activity);
+                            Utils.showAlert("Alert", "You are no longer hosting.", activity);
+                            db.updateHost(id, 0);
                         }
                         else if (Objects.equals(num, "1")) {
                             Utils.showAlert("Success", "You are now hosting!", activity);
+                            db.updateHost(id, 1);
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -213,7 +223,6 @@ public class Utils {
                 return params;
             }
         };
-        queue = Volley.newRequestQueue((Context) activity);
         queue.add(stringRequest);
     }
 }

@@ -142,8 +142,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateHost() {
-
+    public void updateHost(String id, int hostStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_HOSTING, hostStatus);
+        db.update(TABLE_USERS, values, KEY_USERID +"=\""+id+"\"", null);
+        db.close();
     }
 
 }

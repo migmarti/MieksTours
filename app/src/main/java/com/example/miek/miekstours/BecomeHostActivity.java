@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.miek.miekstours.Classes.DatabaseHandler;
 import com.example.miek.miekstours.Classes.DateTextPicker;
 import com.example.miek.miekstours.Classes.UserAccount;
@@ -27,6 +28,7 @@ public class BecomeHostActivity extends AppCompatActivity {
 
         db = new DatabaseHandler(getApplicationContext());
         currentUser = db.getCurrentUser();
+        queue = Volley.newRequestQueue(this);
 
         TextView textLocation = (TextView) findViewById(R.id.textViewLocation);
         textLocation.setText(currentUser.getLocation());
@@ -40,17 +42,14 @@ public class BecomeHostActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (Utils.validateDates(getBaseContext(), startDate, endDate)) {
                     Utils.checkHost(BecomeHostActivity.this, currentUser.getId(), "1",
-                            startDate.getText(), endDate.getText(), queue);
+                            startDate.getText(), endDate.getText(), queue, db);
                     //finish();
                 }
             }
         });
     }
 
-
-
-
     public void onBackPressed() {
-        finish();
+        Utils.executeActivity(getApplicationContext(), BecomeHostActivity.this, EditProfileActivity.class);
     }
 }
