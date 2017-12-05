@@ -14,10 +14,8 @@ include_once '../con.php';
 		public function insert_request($HostId,$TravelerId,$StartDate,$EndDate,$Comment,$StatusId)
 		{
 				$query = "INSERT INTO Requests (HostId, TravelerId, StartDate, EndDate, Comment, StatusId) VALUES('$HostId', '$TravelerId', '$StartDate', '$EndDate', '$Comment', '$StatusId')";
-
 				$result = mysqli_query($this -> connection, $query);
 				$json['success'] = 'Request sent';
-		
 				echo json_encode($json);
 				mysqli_close($this->connection);
 		}
