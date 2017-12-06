@@ -19,22 +19,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aba0f685-9a69-417c-a75c-55d111182443" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/Requests.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/RequestsAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/request_row.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/AvailableHostsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/AvailableHostsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/DatabaseHandler.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/DatabaseHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/UserAccount.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/UserAccount.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/UserAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/UserAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/EditProfileActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/EditProfileActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/HostProfileActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/HostProfileActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/HubActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/HubActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/RegisterProfileActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/RegisterProfileActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/RequestsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/RequestsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_host_profile.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_host_profile.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_requests.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_requests.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/user_row.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/user_row.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/RequestsAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/RequestsAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/Utils.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/Utils.java" />
     </list>
     <ignored path="MieksTours.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,17 +64,40 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/RequestsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RequestsAdapter.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BecomeHostActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/BecomeHostActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="29" column="42" selection-start-line="29" selection-start-column="42" selection-end-line="29" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RequestsAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/RequestsAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="57" column="46" selection-start-line="57" selection-start-column="46" selection-end-line="57" selection-end-column="46" />
+              <folding>
+                <element signature="e#2584#2832#0" expanded="true" />
+                <element signature="e#2831#2832#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Utils.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/Utils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5860215">
+              <caret line="211" column="29" selection-start-line="211" selection-start-column="29" selection-end-line="211" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -1969,7 +1980,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_become_host.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/InterestsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/BecomeHostActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/Utils.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_hub.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/RegisterActivity.java" />
@@ -1988,6 +1998,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/RequestsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/HubActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/RequestsAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/Utils.java" />
       </list>
     </option>
   </component>
@@ -2160,7 +2171,7 @@
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="device.picker.selection" value="192.168.118.101:5555" />
+    <property name="device.picker.selection" value="CIA6VGH699999999" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../TestApp" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.WIDTH" value="329" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.SHOW" value="true" />
@@ -2463,7 +2474,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.4969743" order="6" side_tool="false" content_ui="tabs" />
@@ -2806,25 +2817,10 @@
         <state theme-name="MieksTourTheme" module-name="app" proportion="0.66991234" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/BecomeHostActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="45" selection-start-line="30" selection-start-column="45" selection-end-line="30" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/org/json/JSONObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="587" column="0" selection-start-line="587" selection-start-column="0" selection-end-line="587" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="118" column="9" selection-start-line="118" selection-start-column="9" selection-end-line="118" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -3021,18 +3017,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/RequestsAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="57" column="46" selection-start-line="57" selection-start-column="46" selection-end-line="57" selection-end-column="46" />
+          <folding>
+            <element signature="e#2584#2832#0" expanded="true" />
+            <element signature="e#2831#2832#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/RequestsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/RequestsAdapter.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/BecomeHostActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="29" column="42" selection-start-line="29" selection-start-column="42" selection-end-line="29" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/miek/miekstours/Classes/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5860215">
+          <caret line="211" column="29" selection-start-line="211" selection-start-column="29" selection-end-line="211" selection-end-column="29" />
           <folding />
         </state>
       </provider>

@@ -1,5 +1,6 @@
 package com.example.miek.miekstours.Classes;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
@@ -38,7 +39,7 @@ public class RequestsAdapter extends ArrayAdapter<Requests> {
         this.queue = queue;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View objectView = super.getView(position, convertView, parent);
         final TextView textInfo = (TextView) objectView.findViewById(R.id.textViewInfo);
         final TextView textInfo2 = (TextView) objectView.findViewById(R.id.textViewInfo2);
@@ -46,12 +47,12 @@ public class RequestsAdapter extends ArrayAdapter<Requests> {
         final TextView textStatus = (TextView) objectView.findViewById(R.id.textViewStatus);
 
         final Requests request = this.getItem(position);
-        textInfo.setText("Title");
-        textInfo2.setText("Title");
         textBody.setText(request.getComment());
 
         Button buttonApprove = (Button) objectView.findViewById(R.id.buttonApprove);
         if (user.getHostingStatus() == 0) {
+            textInfo.setText("To Host");
+            textInfo2.setText("Host Info + Dates");
             buttonApprove.setVisibility(View.INVISIBLE);
             String status = request.getStatus();
             if (Objects.equals(status, "0")) {
@@ -63,10 +64,17 @@ public class RequestsAdapter extends ArrayAdapter<Requests> {
                 textStatus.setTextColor(Color.GREEN);
             }
         }
+        else {
+            textInfo.setText("From Traveler");
+            textInfo2.setText("Traveler Info + Dates");
+
+        }
         buttonApprove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 approveRequest(request.getRequestId());
+                remove(request);
+                notifyDataSetChanged();
             }
         });
 
@@ -74,18 +82,19 @@ public class RequestsAdapter extends ArrayAdapter<Requests> {
         return objectView;
     }
 
-    private void approveRequest(String requestId) {
+    public void approveRequest(String requestId) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, APPROVEREQ_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        System.out.println("MIEK APPROVE REQUEST RESPONSE: " + response);
+                        Utils.showAlert("Success", "Request has been approved.", (Activity) context);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        System.out.println(error.getMessage());
                     }
                 }){
             @Override

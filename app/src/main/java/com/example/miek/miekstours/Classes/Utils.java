@@ -40,6 +40,7 @@ public class Utils {
 
     public static void executeActivity(Context context, Activity activityToFinish, Class activityClass) {
         Intent intent = new Intent(context, activityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
         if (activityToFinish != null) {
             activityToFinish.finish();
@@ -218,7 +219,7 @@ public class Utils {
                 Map<String,String> params = new HashMap<>();
                 params.put("UserId", id);
                 params.put("startDate", startDate);
-                params.put("endDate", startDate);
+                params.put("endDate", endDate);
                 params.put("HostingStatus", num);
                 return params;
             }
