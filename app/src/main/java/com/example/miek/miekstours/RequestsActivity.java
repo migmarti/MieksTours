@@ -1,7 +1,10 @@
 package com.example.miek.miekstours;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
@@ -19,6 +22,7 @@ public class RequestsActivity extends AppCompatActivity {
     ListView requestList;
     RequestsAdapter adapter;
     RequestQueue queue;
+    Button refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,18 @@ public class RequestsActivity extends AppCompatActivity {
         adapter = new RequestsAdapter(this, user, queue);
         requestList.setAdapter(adapter);
         fillList(requests);
+
+        refresh = (Button) findViewById(R.id.buttonRefresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RequestsActivity.class);
+                intent.putExtra("Requests", requests);
+                intent.putExtra("User", user);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void fillList(ArrayList<Requests> requests) {

@@ -23,8 +23,8 @@ public class Requests implements Parcelable {
         try {
             JSONObject jObject = new JSONObject(jsonString);
             this.requestId = jObject.getString("RequestId");
-            this.hostId = jObject.getString("RequestId");
-            this.travelerId = jObject.getString("RequestId");
+            this.hostId = jObject.getString("HostId");
+            this.travelerId = jObject.getString("TravelerId");
             this.startDate = jObject.getString("StartDate");
             this.endDate = jObject.getString("EndDate");
             this.comment = jObject.getString("Comment");
