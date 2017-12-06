@@ -34,7 +34,7 @@ include_once '../con.php';
 		$LastName = $_POST['LastName'];
 		$DoB = $_POST['DoB'];
 		$Location = $_POST['Location'];
-		$Description = $_POST['Description'];
+		$Description = addslashes($_POST['Description']);
 		$Latitud = $_POST['Latitud'];
 		$Longitud = $_POST['Longitud'];
 

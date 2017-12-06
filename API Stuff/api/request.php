@@ -28,7 +28,7 @@ include_once '../con.php';
 		$TravelerId = $_POST['TravelerId'];
 		$StartDate = $_POST['StartDate'];
 		$EndDate = $_POST['EndDate'];
-		$Comment = $_POST['Comment'];
+		$Comment = addslashes($_POST['Comment']);
 		$StatusId = $_POST['StatusId'];
 
 

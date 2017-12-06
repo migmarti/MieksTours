@@ -15,16 +15,14 @@ include_once '../con.php';
 		{
 				$Long1 = $Longitud + 0.30;
 				$Long2 = $Longitud - 0.30;
-
 				$Lat1 = $Latitud + 0.30;
 				$Lat2 = $Latitud - 0.30;
-				
 				$query = "SELECT *  FROM Users
 							WHERE HostingStatus = 1
 							AND Latitud BETWEEN '$Lat2' AND '$Lat1'
 							AND Longitud BETWEEN '$Long2' AND '$Long1'
-							AND startDate >= STR_TO_DATE('$startDate', '%Y-%m-%d')
-							AND endDate <= STR_TO_DATE('$endDate','%Y-%m-%d')";
+							AND startDate <= STR_TO_DATE('$startDate', '%Y-%m-%d')
+							AND endDate >= STR_TO_DATE('$endDate','%Y-%m-%d')";
 
 				$result = mysqli_query($this -> connection, $query);
 				while($row = $result->fetch_assoc()){
